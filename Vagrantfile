@@ -16,14 +16,14 @@ Vagrant.configure("2") do |config|
   node_ips = GALERA_CLUSTER_IPS
   node_ips.each_with_index do |node_ip, index|
     box_hostname = "#{GALERA_CLUSTER_PREFIX}#{index+1}"
- 
-    config.vm.provider "virtualbox" do |vb|
-      vb.name = "mariadb#{index+1}"
-    end
 
-    config.vm.define "db1" do |db|
+    config.vm.define box_hostname do |db|
       db.vm.hostname = box_hostname
       db.vm.network "private_network", ip: node_ip
+
+      db.vm.provider "virtualbox" do |vb|
+        vb.name = box_hostname
+      end
 
       db.vm.provision "shell", run: "once", inline: <<-SHELL
         apt-get update -y
@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
       db.vm.provision "shell",
         run: "once",
         privileged: false,
-        inline: "ssh-keygen -t rsa -f ~/.ssh/id_rsa -P dicoding"
+        inline: "ssh-keygen -y -t rsa -f ~/.ssh/id_rsa -P dicoding"
 
       db.vm.provision "shell", run: "once", inline: <<-SHELL
         sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
