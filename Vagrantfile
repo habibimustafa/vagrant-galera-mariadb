@@ -45,19 +45,19 @@ Vagrant.configure("2") do |config|
         cp /vagrant/galera.cnf /etc/mysql/conf.d/galera.cnf      
       SHELL
 
-			replace_hostname_cmd = "sed -i 's/THIS_HOSTNAME/#{box_hostname}/' /etc/mysql/conf.d/galera.cnf"
-			replace_all_ips_cmd = "sed -i 's/ALL_IPS/#{node_ips.join(',')}/' /etc/mysql/conf.d/galera.cnf"
-			replace_this_ip_cmd = "sed -i 's/THIS_IP/#{node_ip}/' /etc/mysql/conf.d/galera.cnf"
+      replace_hostname_cmd = "sed -i 's/THIS_HOSTNAME/#{box_hostname}/' /etc/mysql/conf.d/galera.cnf"
+      replace_all_ips_cmd = "sed -i 's/ALL_IPS/#{node_ips.join(',')}/' /etc/mysql/conf.d/galera.cnf"
+      replace_this_ip_cmd = "sed -i 's/THIS_IP/#{node_ip}/' /etc/mysql/conf.d/galera.cnf"
 
-			db.vm.provision :shell, run: 'once', inline: replace_hostname_cmd
-			db.vm.provision :shell, run: 'once', inline: replace_all_ips_cmd
-			db.vm.provision :shell, run: 'once', inline: replace_this_ip_cmd
+      db.vm.provision :shell, run: 'once', inline: replace_hostname_cmd
+      db.vm.provision :shell, run: 'once', inline: replace_all_ips_cmd
+      db.vm.provision :shell, run: 'once', inline: replace_this_ip_cmd
 
-			if index == 0
-				db.vm.provision :shell, run: 'once', inline: 'galera_new_cluster'
-			else
-				db.vm.provision :shell, run: 'once', inline: 'service mysql start'
-			end
+      if index == 0
+        db.vm.provision :shell, run: 'once', inline: 'galera_new_cluster'
+      else
+        db.vm.provision :shell, run: 'once', inline: 'service mysql start'
+      end
     end
   end
 end
