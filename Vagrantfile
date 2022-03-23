@@ -31,11 +31,6 @@ Vagrant.configure("2") do |config|
         apt-get clean -y
       SHELL
 
-      db.vm.provision "shell",
-        run: "once",
-        privileged: false,
-        inline: "ssh-keygen -y -t rsa -f ~/.ssh/id_rsa -P dicoding"
-
       db.vm.provision "shell", run: "once", inline: <<-SHELL
         sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
         sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://sgp1.mirrors.digitalocean.com/mariadb/repo/10.2/ubuntu bionic main'
